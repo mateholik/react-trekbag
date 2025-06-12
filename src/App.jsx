@@ -9,6 +9,9 @@ import { initialItems } from './lib/constants';
 export default function App() {
   const [items, setItems] = useState(initialItems);
 
+  const allItemsAmount = items.length;
+  const packedItemsAmount = items.filter((item) => item.packed).length;
+
   const handleAddItem = (newItemText) => {
     const newItem = {
       id: Date.now(),
@@ -58,7 +61,10 @@ export default function App() {
     <>
       <BackgroundHeading />
       <main>
-        <Header />
+        <Header
+          allItemsAmount={allItemsAmount}
+          packedItemsAmount={packedItemsAmount}
+        />
         <ItemList
           handleDeleteById={handleDeleteById}
           items={items}

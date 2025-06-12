@@ -1,10 +1,13 @@
+import EmptyView from './EmptyView';
+
 export default function ItemList({
   items,
   handleDeleteById,
   handleToggleItemPacked,
 }) {
   return (
-    <ul>
+    <ul className='item-list'>
+      {items.length === 0 && <EmptyView />}
       {items.map((item) => (
         <Item
           onToggleItem={handleToggleItemPacked}
