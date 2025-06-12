@@ -3,6 +3,7 @@ import EmptyView from './EmptyView';
 import Select from 'react-select';
 import { sortingOptions } from '../lib/constants';
 import { useEffect } from 'react';
+import { useMemo } from 'react';
 
 export default function ItemList({
   items,
@@ -13,14 +14,18 @@ export default function ItemList({
     () => JSON.parse(localStorage.getItem('sortBy')) || sortingOptions[0]
   );
 
-  const sortedItems = [...items].sort((a, b) => {
-    if (sortBy.value === 'packed') {
-      return b.packed - a.packed; // Sort packed items first
-    } else if (sortBy.value === 'unpacked') {
-      return a.packed - b.packed; // Sort unpacked items first
-    }
-    return;
-  });
+  const sortedItems = useMemo(
+    () =>
+      [...items].sort((a, b) => {
+        if (sortBy.value === 'packed') {
+          return b.packed - a.packed; // Sort packed items first
+        } else if (sortBy.value === 'unpacked') {
+          return a.packed - b.packed; // Sort unpacked items first
+        }
+        return;
+      }),
+    [items, sortBy]
+  );
 
   useEffect(() => {
     localStorage.setItem('sortBy', JSON.stringify(sortBy));
