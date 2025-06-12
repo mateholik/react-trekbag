@@ -5,9 +5,12 @@ import Header from './components/Header';
 import ItemList from './components/ItemList';
 import Sidebar from './components/Sidebar';
 import { initialItems } from './lib/constants';
+import { useEffect } from 'react';
 
 export default function App() {
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState(
+    () => JSON.parse(localStorage.getItem('items')) || initialItems
+  );
 
   const allItemsAmount = items.length;
   const packedItemsAmount = items.filter((item) => item.packed).length;
@@ -56,6 +59,10 @@ export default function App() {
       )
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(items));
+  }, [items]);
 
   return (
     <>

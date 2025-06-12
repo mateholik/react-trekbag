@@ -1,28 +1,30 @@
 import { useState } from 'react';
 import EmptyView from './EmptyView';
 import Select from 'react-select';
-
-const sortingOptions = [
-  { value: 'default', label: 'Sort by default' },
-  { value: 'packed', label: 'Sort by packed' },
-  { value: 'unpacked', label: 'Sort by unpacked' },
-];
+import { sortingOptions } from '../lib/constants';
+import { useEffect } from 'react';
 
 export default function ItemList({
   items,
   handleDeleteById,
   handleToggleItemPacked,
 }) {
-  const [sortBy, setSortBy] = useState('default');
+  const [sortBy, setSortBy] = useState(
+    () => JSON.parse(localStorage.getItem('sortBy')) || sortingOptions[0]
+  );
 
   const sortedItems = [...items].sort((a, b) => {
-    if (sortBy === 'packed') {
+    if (sortBy.value === 'packed') {
       return b.packed - a.packed; // Sort packed items first
-    } else if (sortBy === 'unpacked') {
+    } else if (sortBy.value === 'unpacked') {
       return a.packed - b.packed; // Sort unpacked items first
     }
     return;
   });
+
+  useEffect(() => {
+    localStorage.setItem('sortBy', JSON.stringify(sortBy));
+  }, [sortBy]);
 
   return (
     <ul className='item-list'>
@@ -30,8 +32,8 @@ export default function ItemList({
       {items.length > 0 && (
         <section className='sorting'>
           <Select
-            defaultValue={sortingOptions[0]}
-            onChange={(option) => setSortBy(option.value)}
+            defaultValue={sortBy}
+            onChange={(option) => setSortBy(option)}
             options={sortingOptions}
           />
         </section>
