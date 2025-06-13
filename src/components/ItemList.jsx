@@ -4,12 +4,11 @@ import Select from 'react-select';
 import { sortingOptions } from '../lib/constants';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
+import { useItemsContext } from '../lib/hooks';
 
-export default function ItemList({
-  items,
-  handleDeleteById,
-  handleToggleItemPacked,
-}) {
+export default function ItemList() {
+  const { items, handleDeleteById, handleToggleItemPacked } = useItemsContext();
+
   const [sortBy, setSortBy] = useState(
     () => JSON.parse(localStorage.getItem('sortBy')) || sortingOptions[0]
   );
