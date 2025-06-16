@@ -46,7 +46,7 @@ export default function ItemsContextProvider({ children }) {
     setItems(updatedItems);
   };
 
-  const handleDeleteById = (id) => {
+  const handledeleteItem = (id) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
@@ -73,7 +73,7 @@ export default function ItemsContextProvider({ children }) {
         handleResetToInitial,
         handleMarkAllAsComplete,
         handleMarkAllAsInComplete,
-        handleDeleteById,
+        handledeleteItem,
         handleToggleItemPacked,
       }}
     >

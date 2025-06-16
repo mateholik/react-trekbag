@@ -4,10 +4,12 @@ import Select from 'react-select';
 import { sortingOptions } from '../lib/constants';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
-import { useItemsContext } from '../lib/hooks';
+import { useItemsStore } from '../stores/itemsStore';
 
 export default function ItemList() {
-  const { items, handleDeleteById, handleToggleItemPacked } = useItemsContext();
+  const items = useItemsStore((state) => state.items);
+  const deleteItem = useItemsStore((state) => state.deleteItem);
+  const toggleItemPacked = useItemsStore((state) => state.toggleItemPacked);
 
   const [sortBy, setSortBy] = useState(
     () => JSON.parse(localStorage.getItem('sortBy')) || sortingOptions[0]
@@ -44,8 +46,8 @@ export default function ItemList() {
       )}
       {sortedItems.map((item) => (
         <Item
-          onToggleItem={handleToggleItemPacked}
-          onDeleteItem={handleDeleteById}
+          onToggleItem={toggleItemPacked}
+          onDeleteItem={deleteItem}
           key={item.id}
           item={item}
         />
